@@ -2,6 +2,10 @@ package com.zuchol.webstore.domain;
 
 import java.math.BigDecimal;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.EqualsAndHashCode;
@@ -13,6 +17,7 @@ import lombok.ToString;
 @Setter
 @EqualsAndHashCode
 @ToString
+@XmlRootElement
 public class Product {
 
 	private Integer productId;
@@ -25,7 +30,9 @@ public class Product {
 	private Long unitsInOrder;
 	private Boolean discontinued;
 	private String condition;
+	@JsonIgnore
 	private MultipartFile productImage;
+	@JsonIgnore
 	private MultipartFile pdfManual;
 	
 	public Product() {
@@ -38,5 +45,14 @@ public class Product {
 		this.price = price;
 	}	
 	
+	@XmlTransient
+	public MultipartFile getProductImage() {
+		return productImage;
+	}
+	
+	@XmlTransient
+	public MultipartFile getPdfManual() {
+		return pdfManual;
+	}
 	
 }
