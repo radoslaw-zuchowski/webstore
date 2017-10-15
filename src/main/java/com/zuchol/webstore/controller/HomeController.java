@@ -7,12 +7,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
 	
-	@RequestMapping("/welcome")
+	@RequestMapping("welcome")
 	public String welcome(Model model) {
 		model.addAttribute("greeting", "Witaj w sklepie internetowym");
 		model.addAttribute("tagline", "Wyjątkowym i jedynym sklepie internetowym");
 		
 		return "welcome";
+	}
+	
+	@RequestMapping("/greting")
+	public String greting() {
+		return "welcome";
+		
 	}
 
 }
