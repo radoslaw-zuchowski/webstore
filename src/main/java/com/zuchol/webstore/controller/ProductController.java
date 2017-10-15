@@ -1,10 +1,13 @@
 package com.zuchol.webstore.controller;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.zuchol.webstore.domain.Product;
 import com.zuchol.webstore.service.ProductService;
@@ -97,7 +101,22 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-		public String processAddNewProductForm(@ModelAttribute("newProduct") Product newProduct, BindingResult result) {
+		public String processAddNewProductForm(@ModelAttribute("newProduct") Product newProduct, BindingResult result, HttpServletRequest request) {
+
+		String s = File.separator;
+		
+		MultipartFile productImage = newProduct.getProductImage();
+		String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+		if (productImage != null && !productImage.isEmpty()) {
+			try {
+				productImage.transferTo(
+						new File(rootDirectory + "resources" + s + "images" + s + newProduct.getProductId() + ".jpg"));
+			} catch (Exception e) {
+				throw new RuntimeException("Niepowodzenie podczas próby zapisu obrazka produktu", e);
+			}
+		}
+
+		
 		productService.addProduct(newProduct);
 		
 		String[] suppressedFields = result.getSuppressedFields();
@@ -111,6 +130,7 @@ public class ProductController {
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder) {
 		binder.setDisallowedFields("unitsInOrder", "discontinued");
+		binder.setAllowedFields("productId", "name", "price", "description", "manufacturer", "category", "unitsInStock", "condition", "productImage");
 	}
 
 	

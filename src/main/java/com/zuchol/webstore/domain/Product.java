@@ -2,6 +2,8 @@ package com.zuchol.webstore.domain;
 
 import java.math.BigDecimal;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +25,7 @@ public class Product {
 	private Long unitsInOrder;
 	private Boolean discontinued;
 	private String condition;
+	private MultipartFile productImage;
 	
 	public Product() {
 		super();
