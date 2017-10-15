@@ -26,6 +26,7 @@ public class Product {
 	private Boolean discontinued;
 	private String condition;
 	private MultipartFile productImage;
+	private MultipartFile pdfManual;
 	
 	public Product() {
 		super();

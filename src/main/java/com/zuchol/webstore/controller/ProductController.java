@@ -115,22 +115,30 @@ public class ProductController {
 				throw new RuntimeException("Niepowodzenie podczas próby zapisu obrazka produktu", e);
 			}
 		}
+		
+		MultipartFile pdfManual = newProduct.getPdfManual();
+		if (pdfManual != null && !pdfManual.isEmpty()) {
+			try {
+				pdfManual.transferTo(
+						new File(rootDirectory + "resources" + s + "pdf" + s + newProduct.getProductId() + ".pdf"));
+			} catch (Exception e) {
+				throw new RuntimeException("Niepowodzenie podczas próby zapisu instrukcji obsługi produktu", e);
+			}
+		}
 
 		
 		productService.addProduct(newProduct);
-		
 		String[] suppressedFields = result.getSuppressedFields();
 		if (suppressedFields.length > 0) {
 			throw new RuntimeException("Próba wiązanie niedozwolononych pól: " + Arrays.toString(suppressedFields));
 		}
-		
 		return "redirect:/products";
 	}
 	
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder) {
 		binder.setDisallowedFields("unitsInOrder", "discontinued");
-		binder.setAllowedFields("productId", "name", "price", "description", "manufacturer", "category", "unitsInStock", "condition", "productImage");
+		binder.setAllowedFields("productId", "name", "price", "description", "manufacturer", "category", "unitsInStock", "condition", "productImage", "pdfManual");
 	}
 
 	
