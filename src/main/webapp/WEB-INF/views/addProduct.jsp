@@ -21,6 +21,9 @@
 			Wyloguj się
 		</a>
 	</div>
+	<div class="pull-right" style="padding-right:50px">
+		<a href="?language=pl">polski</a>|<a href="?language=en">angielski</a>
+	</div>
 	</section>
 
 	<section class="container"> 
